@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lia's PacMac</title>
+    <style type="text/css">
+        body{
+            background-color: black;
+            /* text-align: center; */
+            margin: 0px;
+        }
+        div.row div{
+            width: 30px;
+            height: 30px;
+            /* border: 1px solid black; */
+            display: inline-block;
+            margin: 0px;
+        }
+        .row{
+            height: 30px;
+        }
+        .brick {
+            background-color: blue;
+            margin: 0px;
+        }
+        .empty{
+            background-color: black;
+            margin: 0px;
+        }
+        .coin{
+            background-image: url('coin.gif');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            margin: 0px;
+        }
+        .cherries{
+            background-image: url('cherries.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            margin: 0px;
+        }
+        #pacman{
+            background-image: url("pacman.gif");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+        #score{
+            width: 100px;
+            display: block;
+            text-align: center;
+            margin: 0px auto 30px auto; 
+        }
+        #lives{
+            display: inline-block;
+        }
+        #gameStatus{
+            display: inline-block;
+            width: 150px;
+            text-align: center;
+            vertical-align: top;
+            color: blue;
+            font-size: 25px;
+        }
+        #world{
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="row">
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="pacman"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="empty"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="brick"></div>
+    </div>
+    <div class="row">
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+        <div class="brick"></div>
+    </div> -->
+    <div id="container">
+        <div id="world"></div>
+        <div id="pacman" style='top: 30px; left: 30px;'></div>
+        <div id="gameStatus">
+            <div id="score">0</div>
+            <div id="lives">3</div> : Lives
+        </div>
+
+    </div>
+    <!-- List of features to build 
+
+    1) Have JS Display the world of brik/coins/ect
+    2) Have the pacman move up and down -->
+<script>
+
+var world = [ //creating the world
+    [2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+    [2,3,1,1,1,1,1,1,1,1,1,1,4,2],
+    [2,1,2,2,2,1,1,1,1,2,1,1,2,2],
+    [2,1,2,2,2,1,1,2,2,1,1,1,1,2],
+    [2,1,1,1,2,1,1,2,2,1,1,1,2,2],
+    [2,1,2,1,2,1,1,1,1,1,1,1,1,2],
+    [2,2,2,1,1,1,1,2,2,1,1,1,2,2],
+    [2,1,2,2,2,2,2,2,2,1,1,1,1,2],
+    [2,1,2,2,1,2,1,1,2,1,1,1,2,2],
+    [2,1,1,2,1,2,1,1,1,2,1,1,1,2],
+    [2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+];
+
+var pacman = {
+    x:1,
+    y:1
+};
+
+var score = 0;
+
+function dispalyWorld(){ //drawing the world
+    var output ='';
+
+    for( var i=0; i<world.length; i++){
+        output+="<div class ='row'>";
+        for(var j=0; j<world[i].length; j++){
+            if(world[i][j] == 2){
+                output+="<div class='brick'></div>";
+            }
+            if(world[i][j] == 1){
+                output+="<div class='coin'></div>";
+            }
+            if(world[i][j] == 3){
+                output+="<div class='empty'></div>";
+            }
+            if(world[i][j] == 4){
+                output+= "<div class='cherries'></div>";
+            }
+        }
+        output+="</div>";
+    }
+    console.log(output);
+    document.getElementById('world').innerHTML = output;
+}
+dispalyWorld();
+
+function displayPacman(){
+    document.getElementById('pacman').style.top =pacman.y*30+"px";
+    document.getElementById('pacman').style.left =pacman.x*30+"px";
+}
+// displayPacman();
+
+function displayScore(){
+    document.getElementById('score').innerHTML = score;
+}
+
+document.onkeydown =  function(directionCode){
+    console.log(directionCode.keyCode);
+
+    if(directionCode.keyCode ==39 && world[pacman.y][pacman.x+1] !=2){ // LEFT
+        pacman.x++;
+        // need pacman to turn his body
+        displayPacman();
+
+    }
+    
+    if(directionCode.keyCode ==37 && world[pacman.y][pacman.x-1] !=2){ // RIGHT
+        pacman.x--;
+        // make sure we are grabbing the orginal pacman to face the 'right' direction
+        displayPacman();
+
+    }
+    
+    if(directionCode.keyCode == 38 && world[pacman.y-1][pacman.x] !=2){ // UP
+        pacman.y --;
+        displayPacman();
+    }
+
+    if(directionCode.keyCode == 40 && world[pacman.y+1][pacman.x] !=2){ // DOWN
+        pacman.y ++;
+        displayPacman();
+    }
+
+    // redrawing the world and keeping score of the game while pacman eats 
+    if(world[pacman.y][pacman.x]==1){ // eating a coin
+        score += 10
+        world[pacman.y][pacman.x]=3; // which is an empty space
+        dispalyWorld();
+        displayScore()
+    }
+
+    
+    if(world[pacman.y][pacman.x]==4){ // eating a cherry
+        score += 50
+        world[pacman.y][pacman.x]=3; // which is an empty space
+        dispalyWorld();
+        displayScore()
+    }
+
+}
+
+// extra things to work on
+// 1- create a lives counter
+// 2- kick out an error pg one you have died
+// 3- ask for a restart
+// 4- then creat a new random world and start the game all over
+// 5- maybe ask for a new "pacman character" and eating pices and ghosts
+// 6- eating sounds whenever pacman eats coins.
+
+
+
+
+</script>
+
+</body>
+</html>
